@@ -1,5 +1,6 @@
-Feature: Test
+Feature: Subir un video
 
-	Scenario: Test hello world
-		When llamo al index
-		Then devuelve hello world
+	Scenario: Subida exitosa
+		Given que estoy en la aplicación
+		When intento subir un video con título "mi primer video"
+		Then obtiene una respuesta exitosa
