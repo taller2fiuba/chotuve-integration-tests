@@ -52,6 +52,10 @@ case $arg in
         export CHOTUVE_AUTH_REPO_DIR=$(readlink -f "${arg#*=}")
     shift
     ;;
+    --no-docker-for-behave)
+        export NO_DOCKER_FOR_BEHAVE=1
+    shift
+    ;;
     *)
          print_usage;
          exit 1;
@@ -182,13 +186,17 @@ if [[ ! $CHOTUVE_APP_URL ]]; then
 fi
 
 echo 'Corriendo behave...'
-docker run -it --network="host" \
-    -e CHOTUVE_MEDIA_URL=$CHOTUVE_MEDIA_URL \
-    -e CHOTUVE_APP_URL=$CHOTUVE_APP_URL \
-    -e CHOTUVE_AUTH_URL=$CHOTUVE_AUTH_URL \
-    -v $ACCEPTANCE_TESTS_DIR:/tests \
-    -w /tests \
-    python:3.8 \
-    sh -c 'pip install -r requirements.txt && behave'
-
+if [[ ! $NO_DOCKER_FOR_BEHAVE ]]; then
+    docker run -it --network="host" \
+        -e CHOTUVE_MEDIA_URL=$CHOTUVE_MEDIA_URL \
+        -e CHOTUVE_APP_URL=$CHOTUVE_APP_URL \
+        -e CHOTUVE_AUTH_URL=$CHOTUVE_AUTH_URL \
+        -v $ACCEPTANCE_TESTS_DIR:/tests \
+        -w /tests \
+        python:3.8 \
+        sh -c 'pip install -r requirements.txt && behave'
+else
+    cd $ACCEPTANCE_TESTS_DIR
+    behave
+fi
 # La limpieza se hace automáticamente antes de que termine el proceso de bash
