@@ -66,7 +66,7 @@ function get_random_free_port() {
         ss -lpn | grep -q ":$PORT " || break
     done
     echo $PORT
-}    
+}
 
 function wait_server() {
     TIMEOUT=60
@@ -96,7 +96,7 @@ function cleanup() {
     if [[ -d $TMPDIR/chotuve-app-server ]]; then
         cd $TMPDIR/chotuve-app-server
         docker-compose down -v --rmi local
-    else 
+    else
         if [[ -d $CHOTUVE_APP_REPO_DIR ]]; then
             cd $CHOTUVE_APP_REPO_DIR
             docker-compose stop
@@ -105,7 +105,7 @@ function cleanup() {
     if [[ -d $TMPDIR/chotuve-auth-server ]]; then
         cd $TMPDIR/chotuve-auth-server
         docker-compose down -v --rmi local
-    else 
+    else
         if [[ -d $CHOTUVE_AUTH_REPO_DIR ]]; then
             cd $CHOTUVE_AUTH_REPO_DIR
             docker-compose stop
@@ -169,16 +169,16 @@ ACCEPTANCE_TESTS_DIR=$(pwd)
 TMPDIR=$(mktemp -d -t ci-XXXXXXXXXX)
 cd $TMPDIR
 
-if [[ ! $CHOTUVE_APP_URL ]]; then
-    setup_app_server
-fi
-
 if [[ ! $CHOTUVE_MEDIA_URL ]]; then
     setup_media_server
 fi
 
 if [[ ! $CHOTUVE_AUTH_URL ]]; then
     setup_auth_server
+fi
+
+if [[ ! $CHOTUVE_APP_URL ]]; then
+    setup_app_server
 fi
 
 echo 'Corriendo behave...'
