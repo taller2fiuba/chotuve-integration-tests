@@ -16,12 +16,12 @@ REPO_CHOTUVE_APP="https://github.com/taller2fiuba/chotuve-app-server"
 REPO_CHOTUVE_AUTH="https://github.com/taller2fiuba/chotuve-auth-server"
 
 function print_usage() {
-    echo "Corre las pruebas de aceptación."
-    echo "Uso: $0 [--chotuve-media-repo=<MEDIA REPO>] [--chotuve-app-repo=<APP REPO>] [--chotuve-auth-repo=<AUTH REPO>]"
-    echo "Si se le pasa --chotuve-media-repo y/o --chotuve-app-repo se utilizarán esas URLs para"
-    echo "contactar al servidor de Flask y Node, respectivamente."
-    echo "Si no se pasa alguno de esos parámetros el script levantará una imagen"
-    echo "productiva del servidor correspondiente mediante docker-compose".
+    echo "Levanta versiones productivas de los servidores y corre las pruebas de aceptación."
+    echo "Uso: $0 [OPCIONES]"
+    echo "Opciones:"
+    echo '  --chotuve-[app|auth|media]-repo=<directorio>: Ubicación del repositorio para un servidor.'
+    echo '      Si no se pasa esta opción para alguno de los servidores, se lo clonará desde su repositorio.'
+    echo '  --no-docker-for-behave: Corre behave en la máquina local en lugar de hacerlo dentro de un contenedor de Docker.'
 }
 
 # Procesar argumentos

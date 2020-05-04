@@ -1,56 +1,60 @@
 # Pruebas de aceptación
 
-Este script permite correr automáticamente las pruebas de aceptación. El mismo puede 
-descargar y levantar automáticamente los servicios requeridos o utilizar servicios 
-según la URL indicada.
+Este repositorio contiene las pruebas de aceptación de Chotuve.
 
-## Requerimientos:
-- Docker
-- Docker Compose
+Existen dos scripts para correr las pruebas:
+- `run-acceptance-tests.sh`: El script por defecto para integración continua.
+- `run-tests-url.sh`: Permite correr las pruebas indicando la URL de cada 
+   servicio.
 
-## Cómo correr las pruebas
+## Correr las pruebas (CI)
+Para correr las pruebas en el servidor de integración continua o antes de agregar
+cambios a un PR, se utiliza el script `run-acceptance-tests.sh`. 
 
-### Para correr las pruebas levantando automáticamente todos los servicios:
+Este script va a crear una red interna de Docker llamada "chotuve" o utilizar 
+una ya existente, levantar una imagen productiva de cada servidor sobre esta
+red con una base de datos vacía, y luego correr `behave` apuntándolo a estos
+servicios.
+
+Se soportan las siguientes opciones:
+- `--chotuve-[app|auth|media]-repo=<directorio>`: Permite indicar donde está
+clonado el repositorio para cada uno de los servidores. Si no se indica este
+parámetro para algún servidor se lo clonará la rama master de su respectivo
+repositorio en Github.
+- `--no-docker-for-behave`: Por defecto `behave` se corre dentro de un 
+contenedor de Docker para garantizar que la ejecución es siempre la misma y 
+evitar ensuciar el sistema. Esto tiene la desventaja de que es un poco más lento,
+con lo cual se puede pasar esta opción para correr `behave` directamente en la
+máquina local. Require que se instale el archivo `requirements.txt` en la 
+máquina previamente.
+
+Ejemplo de uso descargando todos los repositorios:
 
 ```bash
 $ ./run-acceptance-tests.sh
 ```
 
-El script clonará los repositorios, levantará los servicios mediante `docker-compose`
-y luego se correrá behave dentro de un contenedor de Docker. Al finalizar se limpiaran 
-los archivos temporales dejando el sistema donde se corrió intacto.
-El único rastro que puede quedar son imagenes oficiales de Docker descargadas.
-
-### Para correrlo utilizando un Chotuve App en una URL específica:
+Ejemplo de uso descargando sólo los repositorios de App server y Media server:
 
 ```bash
-$ ./run-acceptance-tests.sh --chotuve-app-url=http://localhost:27080
+$ ./run-acceptance-tests.sh --chotuve-auth-server=../chotuve-auth-server
 ```
 
-En este caso sólo se clonarán y levantarán los servicios Auth y Media. Las pruebas
-se correrán en un contenedor de Docker utilizando la URL indicada.
+## Correr las pruebas (indicando URL)
+Es posible correr las pruebas de aceptación sin levantar ningún servicio, 
+indicándole a `behave` la URL de cada uno de los servidores. Esto se hace 
+corriendo el script `run-tests-url.sh`.
 
-### Para correrlo sin levantar ningún servicio extra:
+Este script únicamente va a correr `behave` apuntándolo a las URL indicadas.
+
+Se soportan las siguientes opciones:
+- `--chotuve-[app|auth|media]-url=<URL>`: **Requerido**. Indica cuál es la URL
+de cada servidor.
+- `--no-docker-for-behave`: Al igual que en `run-acceptance-tests.sh`, permite
+elegir correr `behave` en la máquina local.
+
+Ejemplo de uso:
 
 ```bash
-$ ./run-acceptance-tests.sh --chotuve-app-url=http://localhost:27080 \
-                            --chotuve-media-url=http://localhost:5000 \
-                            --chotuve-auth-url=http://localhost:5001
+$ ./run-tests-url.sh --chotuve-media-url=http://localhost:27080 --chotuve-auth-url=http://localhost:26080 --chotuve-app-url=http://localhost:28080
 ```
-
-En este caso no se clonará ningún repositorio, las pruebas se correrán dentro 
-de Docker realizando solicitudes a dichas URL.
-
-### Para correrlo desde un repositorio ya clonado
-
-```bash
-$ ./run-acceptance-tests.sh --chotuve-app-repo=./chotuve-app-server
-```
-
-En este caso no se clonará el repo del App server, pero sí se levantarán las versiones 
-productivas del Media y Auth server. En este caso no se realizará limpieza de 
-la ejecución. El contenedor se detendrá mediante `docker-compose stop`.
-
-
-Todos los parámetros `--<chotuve-app|chotuve-media|chotuve-auth>-*` tienen su 
-versión para las otras variantes.
