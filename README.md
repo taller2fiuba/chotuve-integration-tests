@@ -37,7 +37,7 @@ $ ./run-acceptance-tests.sh
 Ejemplo de uso descargando sólo los repositorios de App server y Media server:
 
 ```bash
-$ ./run-acceptance-tests.sh --chotuve-auth-server=../chotuve-auth-server
+$ ./run-acceptance-tests.sh --chotuve-auth-repo=../chotuve-auth-server
 ```
 
 ## Correr las pruebas (indicando URL)
