@@ -1,8 +1,9 @@
 from behave import *
-import requests
 
 from config import CHOTUVE_APP_URL
+from config_usuario import EMAIL, PASSWORD
 from comun_steps import verificar_codigo_de_respuesta
+from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
 @given('mi mail ya se encuentra registrado')
 def step_impl(context):
@@ -12,7 +13,7 @@ def step_impl(context):
 
 @when('me registro con mail y contraseña')
 def step_impl(context):
-    context.response = requests.post(f'{CHOTUVE_APP_URL}/usuario', json={'email': 'test@test.com', 'password': 'test123'})
+    context.response = ChotuveAppServerApiClient().registrarse(EMAIL, PASSWORD)
 
 @then('me registro exitosamente')
 def step_impl(context):

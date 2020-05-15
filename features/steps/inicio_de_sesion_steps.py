@@ -1,9 +1,9 @@
 from behave import *
-import requests
 
 from config import CHOTUVE_APP_URL
 from config_usuario import EMAIL, PASSWORD
 from comun_steps import verificar_codigo_de_respuesta
+from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
 @given('estoy registrado')
 def step_impl(context):
@@ -17,11 +17,11 @@ def step_impl(context):
 
 @when('inicio sesion con mi mail o contraseña incorrectos')
 def step_impl(context):
-    context.response = requests.post(f'{CHOTUVE_APP_URL}/usuario/sesion', json={'email': EMAIL, 'password': 'no_es_mi_pass'})
+    context.response = ChotuveAppServerApiClient().iniciar_sesion(EMAIL, 'no_es_mi_pass')
 
 @when('inicio sesion con mi mail y contraseña correctos')
 def step_impl(context):
-    response = requests.post(f'{CHOTUVE_APP_URL}/usuario/sesion', json={'email': EMAIL, 'password': PASSWORD})
+    response = ChotuveAppServerApiClient().iniciar_sesion(EMAIL, PASSWORD)
     context.response = response
     context.token = response.json().get('token', None)
 
