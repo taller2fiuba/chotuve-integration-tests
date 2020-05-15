@@ -1,6 +1,6 @@
 Feature: Inicio sesión en la aplicación
 
-	Scenario:  Inicio de sesión exitoso
+	Scenario: Inicio de sesión exitoso
 		Given estoy registrado
 		When inicio sesion con mi mail y contraseña correctos
 		Then ingreso exitosamente a mi cuenta
