@@ -1,9 +1,9 @@
 from behave import *
-import requests
 
 from config import CHOTUVE_APP_URL
 from config_usuario import EMAIL, PASSWORD
 from comun_steps import verificar_codigo_de_respuesta
+from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
 @given('inicie sesión correctamente')
 def step_impl(context):
@@ -14,22 +14,25 @@ def step_impl(context):
 
 @given('no inicie sesión')
 def step_impl(context):
-    pass
+    context.token = None
+
+@given('mi sesion es invalida o caduco')
+def step_impl(context):
+    context.token = 'token_invalido'
 
 @when('pido mi mail')
-def step_impl(context, titulo):
-    # TODO poner header de token
-    context.response = requests.get(f'{CHOTUVE_APP_URL}/usuario/perfil')
+def step_impl(context):
+    context.response = ChotuveAppServerApiClient().mi_perfil(context)
 
 @then('recibo mi mail correctamente')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context.response.status_code, 200)
+    verificar_codigo_de_respuesta(context, 200)
     assert context.response.json()['email'] == EMAIL
 
 @then('veo error porque primero debo iniciar sesión')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context.response.status_code, 401)
+    verificar_codigo_de_respuesta(context, 401)
 
 @then('veo error porque debo volver a iniciar sesión')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context.response.status_code, 403)
+    verificar_codigo_de_respuesta(context, 403)

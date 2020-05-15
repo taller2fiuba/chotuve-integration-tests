@@ -16,19 +16,21 @@ def step_impl(context):
     pass
 
 @when('inicio sesion con mi mail o contraseña incorrectos')
-def step_impl(context, titulo):
+def step_impl(context):
     context.response = requests.post(f'{CHOTUVE_APP_URL}/usuario/sesion', json={'email': EMAIL, 'password': 'no_es_mi_pass'})
 
 @when('inicio sesion con mi mail y contraseña correctos')
-def step_impl(context, titulo):
-    context.response = requests.post(f'{CHOTUVE_APP_URL}/usuario/sesion', json={'email': EMAIL, 'password': PASSWORD})
+def step_impl(context):
+    response = requests.post(f'{CHOTUVE_APP_URL}/usuario/sesion', json={'email': EMAIL, 'password': PASSWORD})
+    context.response = response
+    context.token = response.json().get('token', None)
 
 @then('ingreso exitosamente a mi cuenta')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context.response.status_code, 200)
+    verificar_codigo_de_respuesta(context, 200)
     assert context.response.json()['token'] != ''
 
 @then('veo error de inicio de sesión porque el mail o la contraseña es incorrecto')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context.response.status_code, 400)
+    verificar_codigo_de_respuesta(context, 400)
     assert context.response.json()['mensaje'] == 'Email o constraseña invalidos'
