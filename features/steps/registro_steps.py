@@ -2,7 +2,7 @@ from behave import *
 
 from config import CHOTUVE_APP_URL
 from config_usuario import EMAIL, PASSWORD
-from comun_steps import verificar_codigo_de_respuesta
+from verificar_codigo_de_respuesta import *
 from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
 @given('mi mail ya se encuentra registrado')
