@@ -23,12 +23,12 @@ def step_impl(context):
 def step_impl(context):
     response = ChotuveAppServerApiClient().iniciar_sesion(EMAIL, PASSWORD)
     context.response = response
-    context.token = response.json().get('token', None)
+    context.token = response.json().get('auth_token', None)
 
 @then('ingreso exitosamente a mi cuenta')
 def step_impl(context):
     verificar_codigo_de_respuesta(context, 200)
-    assert context.response.json()['token'] != ''
+    assert context.response.json()['auth_token'] != ''
 
 @then('veo error de inicio de sesión porque el mail o la contraseña es incorrecto')
 def step_impl(context):
