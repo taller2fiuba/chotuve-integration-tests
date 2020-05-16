@@ -1,6 +1,6 @@
 import requests
 
-from config import CHOTUVE_APP_URL
+from steps.config import CHOTUVE_APP_URL
 
 class ChotuveAppServerApiClient:
 
@@ -15,6 +15,9 @@ class ChotuveAppServerApiClient:
 
     def subir_video(self, video_url, titulo):
         return self.post('video', {'url': video_url, 'titulo': titulo})
+
+    def limpiar_base_de_datos(self):
+        return requests.delete(f'{CHOTUVE_APP_URL}/base_de_datos')
 
     def get_con_token(self, url, context):
         headers = {'Authorization': f'Bearer {context.token}'}
