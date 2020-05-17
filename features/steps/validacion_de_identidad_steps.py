@@ -14,7 +14,7 @@ def step_impl(context):
 
 @given('no inicie sesión')
 def step_impl(context):
-    context.token = None
+    context.token = ''
 
 @given('mi sesion es invalida o caduco')
 def step_impl(context):

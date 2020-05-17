@@ -11,7 +11,7 @@ class ChotuveAppServerApiClient:
         return self.post('usuario/sesion', {'email': email, 'password': password})
 
     def mi_perfil(self, context):
-        return self.get_con_token('usuario/perfil', context)
+        return self.get_con_token('usuario', context)
 
     def subir_video(self, video_url, titulo):
         return self.post('video', {'url': video_url, 'titulo': titulo})
