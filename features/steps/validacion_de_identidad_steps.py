@@ -35,4 +35,4 @@ def step_impl(context):
 
 @then('veo error porque debo volver a iniciar sesión')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context, 403)
+    verificar_codigo_de_respuesta(context, 401)
