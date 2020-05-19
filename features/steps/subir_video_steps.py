@@ -1,15 +1,11 @@
 from behave import *
-import requests
 
 from config import CHOTUVE_APP_URL
-
-@given('que estoy en la aplicación')
-def step_impl(context):
-    pass
+from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
 @when('intento subir un video con título "{titulo}"')
 def step_impl(context, titulo):
-    context.response = requests.post(f'{CHOTUVE_APP_URL}/video', json={'url': 'https://www.testurl.com/video/1', 'titulo': titulo})
+    context.response = ChotuveAppServerApiClient().subir_video('https://www.testurl.com/video/1', titulo)
 
 @then('obtiene una respuesta exitosa')
 def step_impl(context):
