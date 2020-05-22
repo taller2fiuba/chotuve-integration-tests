@@ -5,7 +5,7 @@ from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
 @when('intento subir un video con título "{titulo}"')
 def step_impl(context, titulo):
-    context.response = ChotuveAppServerApiClient().subir_video('https://www.testurl.com/video/1', titulo)
+    context.response = ChotuveAppServerApiClient().subir_video('https://www.testurl.com/video/1', titulo, context)
 
 @then('obtiene una respuesta exitosa')
 def step_impl(context):
