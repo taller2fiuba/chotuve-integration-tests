@@ -27,6 +27,9 @@ class ChotuveAppServerApiClient:
 
     def limpiar_base_de_datos(self):
         return requests.delete(f'{CHOTUVE_APP_URL}/base_de_datos')
+    
+    def get_videos(self, context):
+        return self.get_con_token('video', context)
 
     def get_con_token(self, url, context):
         headers = {'Authorization': f'Bearer {context.token}'}
