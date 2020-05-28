@@ -13,8 +13,17 @@ class ChotuveAppServerApiClient:
     def mi_perfil(self, context):
         return self.get_con_token('usuario', context)
 
-    def subir_video(self, video_url, titulo, context):
-        return self.post_con_token('video', {'url': video_url, 'titulo': titulo}, context)
+    def subir_video(self, video_url, titulo, descripcion, ubicacion, duracion, visibilidad, context):
+        body = {
+            'url': video_url,
+            'titulo': titulo,
+            'descripcion': descripcion,
+            'ubicacion': ubicacion,
+            'duracion': duracion,
+            'visibilidad': visibilidad
+        }
+        
+        return self.post_con_token('video', body, context)
 
     def limpiar_base_de_datos(self):
         return requests.delete(f'{CHOTUVE_APP_URL}/base_de_datos')
