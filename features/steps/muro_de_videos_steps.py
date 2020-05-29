@@ -14,4 +14,4 @@ def step_impl(context):
 @then('no veo ningun video')
 def step_impl(context):
     verificar_codigo_de_respuesta(context, 200)
-    assert context.response.json()['data'].length == 0 
+    assert len(context.response.json()) == 0 
