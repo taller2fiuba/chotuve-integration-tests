@@ -20,3 +20,9 @@ Feature: Muro de videos
         Then veo 3 videos
 		    And veo 2 video del usuario "edu@gma.com"
         And veo 1 video del usuario "prueba@gma.com"
+
+    Scenario: Videos subidos por mi
+		  Given el usuario con email "prueba@gma.com" subio 2 videos
+      And yo subi 1 videos
+		  When estoy en la pantalla principal
+      Then veo 2 video del usuario "prueba@gma.com"

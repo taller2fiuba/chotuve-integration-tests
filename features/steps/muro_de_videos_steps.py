@@ -30,6 +30,13 @@ def step_impl(context, usuario_email, cantidad_videos):
             When subo un video con título "mi primer video", descripción "descripcion", ubicación "en mi casa", duracion 60 segundos y visibilidad "publico"
         """)
 
+
+@given(u'yo subi {cantidad_videos:d} videos')
+def step_impl(context, cantidad_videos):
+    context.execute_steps(f"""
+		    Given el usuario con email "yo@test.com" subio {cantidad_videos} videos
+        """)
+
 @then('veo {cantidad_videos:d} video del usuario "{usuario_email}"')
 def step_impl(context, cantidad_videos, usuario_email):
     verificar_codigo_de_respuesta(context, 200)
