@@ -34,5 +34,10 @@ def step_impl(context, usuario_email, cantidad_videos):
 def step_impl(context, cantidad_videos, usuario_email):
     verificar_codigo_de_respuesta(context, 200)
     videos = context.response.json()
-    assert len(videos) == 2, f'Tamaño incorrecto: {context.response.json()}, esperado: {2}'
     verificar_cantidad_de_videos_usuario(videos, usuario_email, cantidad_videos)
+
+@then('veo {cantidad_videos:d} videos')
+def step_impl(context, cantidad_videos):
+    verificar_codigo_de_respuesta(context, 200)
+    videos = context.response.json()
+    assert len(videos) == cantidad_videos, f'Tamaño incorrecto: {context.response.json()}, esperado: {cantidad_videos}'
