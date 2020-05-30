@@ -2,7 +2,7 @@ from behave import *
 
 from config import CHOTUVE_APP_URL
 from config_usuario import EMAIL, PASSWORD
-from verificar_codigo_de_respuesta import *
+from verificar_respuestas import *
 from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
 @given('inicie sesión correctamente')

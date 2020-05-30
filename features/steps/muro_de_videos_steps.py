@@ -1,7 +1,7 @@
 from behave import *
 
 from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
-from verificar_codigo_de_respuesta import *
+from verificar_respuestas import *
 
 @given('nadie subio videos')
 def step_impl(context):
@@ -25,20 +25,12 @@ def step_impl(context, usuario_email, cantidad_videos):
     verificar_codigo_de_respuesta(context, 201)
     context.response = response
     context.token = response.json().get('auth_token', None)
-
-    for i in range(cantidad_videos):
-        context.execute_steps(u"""
-            When subo un video con título "mi primer video", descripción "descripcion", ubicación "en mi casa", duracion 60 segundos y visibilidad "publico"
-        """)
-
+    subir_videos(context, cantidad_videos)
 
 @given(u'yo subi {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
     context.execute_steps(f"Given inicie sesión correctamente")
-    for i in range(cantidad_videos):
-        context.execute_steps(u"""
-            When subo un video con título "mi primer video", descripción "descripcion", ubicación "en mi casa", duracion 60 segundos y visibilidad "publico"
-        """)
+    subir_videos(context, cantidad_videos)
 
 @then('veo {cantidad_videos:d} video del usuario "{usuario_email}"')
 def step_impl(context, cantidad_videos, usuario_email):
@@ -63,3 +55,9 @@ def step_impl(context):
 @then(u'pido demasiados videos')
 def step_impl(context):
     context.response = ChotuveAppServerApiClient().get_videos_inexistentes(context)
+
+def subir_videos(context, cantidad_videos):
+    for i in range(cantidad_videos):
+        context.execute_steps(u"""
+            When subo un video con título "mi primer video", descripción "descripcion", ubicación "en mi casa", duracion 60 segundos y visibilidad "publico"
+        """)
