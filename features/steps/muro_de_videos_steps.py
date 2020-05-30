@@ -20,15 +20,19 @@ def step_impl(context):
 def step_impl(context, usuario_email, cantidad_videos):
     context.response = ChotuveAppServerApiClient().registrarse(usuario_email, "PASSWORD")
     verificar_codigo_de_respuesta(context, 201)
-    context.response = ChotuveAppServerApiClient().iniciar_sesion(usuario_email, "PASSWORD")
-    verificar_codigo_de_respuesta(context, 200)
+    response = ChotuveAppServerApiClient().iniciar_sesion(usuario_email, "PASSWORD")
+    verificar_codigo_de_respuesta(context, 201)
+    context.response = response
+    context.token = response.json().get('auth_token', None)
 
     for i in range(cantidad_videos):
         context.execute_steps(u"""
             When subo un video con título "mi primer video", descripción "descripcion", ubicación "en mi casa", duracion 60 segundos y visibilidad "publico"
         """)
 
-@then('veo sus dos videos')
-def step_impl(context):
+@then('veo {cantidad_videos:d} video del usuario "{usuario_email}"')
+def step_impl(context, cantidad_videos, usuario_email):
     verificar_codigo_de_respuesta(context, 200)
-    assert len(context.response.json()) == 3, f'Tamaño incorrecto: {len(context.response.json())}, esperado: {2}'
+    videos = context.response.json()
+    assert len(videos) == 2, f'Tamaño incorrecto: {context.response.json()}, esperado: {2}'
+    verificar_cantidad_de_videos_usuario(videos, usuario_email, cantidad_videos)

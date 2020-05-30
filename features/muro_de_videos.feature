@@ -11,4 +11,4 @@ Feature: Muro de videos
     Scenario: Videos subidos por un usuario
 		    Given el usuario con email "edu@gma.com" subio 2 videos
 		    When estoy en la pantalla principal
-		    Then veo sus dos videos
+		    Then veo 2 video del usuario "edu@gma.com"
