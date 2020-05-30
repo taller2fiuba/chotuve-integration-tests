@@ -47,4 +47,13 @@ def step_impl(context, cantidad_videos, usuario_email):
 def step_impl(context, cantidad_videos):
     verificar_codigo_de_respuesta(context, 200)
     videos = context.response.json()
-    assert len(videos) == cantidad_videos, f'Tamaño incorrecto: {context.response.json()}, esperado: {cantidad_videos}'
+    assert len(videos) == cantidad_videos, f'Tamaño incorrecto: {len(videos)}, esperado: {cantidad_videos}'
+
+@then('veo {cantidad_videos:d} videos mas')
+def step_impl(context, cantidad_videos):
+    context.execute_steps(f"Then veo {cantidad_videos} videos")
+
+@then(u'pido mas videos')
+def step_impl(context):
+    context.response = ChotuveAppServerApiClient().get_mas_videos(context)
+

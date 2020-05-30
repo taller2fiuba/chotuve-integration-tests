@@ -30,10 +30,14 @@ class ChotuveAppServerApiClient:
     
     def get_videos(self, context):
         return self.get_con_token('video', context)
+    
+    def get_mas_videos(self, context):
+        params = {'offset': 10, 'cantidad': 10}
+        return self.get_con_token('video', context, params)
 
-    def get_con_token(self, url, context):
+    def get_con_token(self, url, context, params={}):
         headers = {'Authorization': f'Bearer {context.token}'}
-        return requests.get(f'{CHOTUVE_APP_URL}/{url}', headers=headers)
+        return requests.get(f'{CHOTUVE_APP_URL}/{url}', headers=headers, params=params)
 
     def post(self, url, json):
         return requests.post(f'{CHOTUVE_APP_URL}/{url}', json=json)

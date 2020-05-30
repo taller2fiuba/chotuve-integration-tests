@@ -25,9 +25,16 @@ Feature: Muro de videos
       Given el usuario con email "prueba@test.com" subio 2 videos
       And yo subi 1 videos
       When estoy en la pantalla principal
-      Then veo 2 video del usuario "prueba@test.com"
+      Then veo 2 videos
     
     Scenario: Muchos videos subidos
       Given el usuario con email "prueba@test.com" subio 15 videos
       When estoy en la pantalla principal
       Then veo 10 videos
+
+    Scenario: Pedir mas videos
+      Given el usuario con email "prueba@test.com" subio 16 videos
+      When estoy en la pantalla principal
+		  Then veo 10 videos
+		  And pido mas videos
+      Then veo 6 videos mas
