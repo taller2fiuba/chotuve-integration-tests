@@ -9,6 +9,7 @@ def step_impl(context):
 
 @when('estoy en la pantalla principal')
 def step_impl(context):
+    context.execute_steps(f"Given inicie sesión correctamente")
     context.response = ChotuveAppServerApiClient().get_videos(context)
 
 @then('no veo ningun video')
@@ -33,8 +34,10 @@ def step_impl(context, usuario_email, cantidad_videos):
 
 @given(u'yo subi {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
-    context.execute_steps(f"""
-		    Given el usuario con email "yo@test.com" subio {cantidad_videos} videos
+    context.execute_steps(f"Given inicie sesión correctamente")
+    for i in range(cantidad_videos):
+        context.execute_steps(u"""
+            When subo un video con título "mi primer video", descripción "descripcion", ubicación "en mi casa", duracion 60 segundos y visibilidad "publico"
         """)
 
 @then('veo {cantidad_videos:d} video del usuario "{usuario_email}"')
