@@ -36,5 +36,13 @@ Feature: Muro de videos
       Given el usuario con email "prueba@test.com" subio 16 videos
       When estoy en la pantalla principal
 		  Then veo 10 videos
-		  And pido mas videos
+		  When pido mas videos
       Then veo 6 videos mas
+
+    Scenario: Pedir videos inexistentes (offset muy grande)
+      Given el usuario con email "prueba@test.com" subio 12 videos
+      When estoy en la pantalla principal
+		  Then veo 10 videos 
+		  When pido videos inexistentes
+      Then veo 0 videos mas
+  
