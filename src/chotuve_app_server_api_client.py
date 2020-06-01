@@ -34,10 +34,6 @@ class ChotuveAppServerApiClient:
     def get_mas_videos(self, context):
         params = {'offset': 10, 'cantidad': 10}
         return self.get_con_token('video', context, params)
-    
-    def get_videos_inexistentes(self, context):
-        params = {'offset': 100, 'cantidad': 10}
-        return self.get_con_token('video', context, params)
 
     def get_con_token(self, url, context, params={}):
         headers = {'Authorization': f'Bearer {context.token}'}

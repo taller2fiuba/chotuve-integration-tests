@@ -48,13 +48,14 @@ def step_impl(context, cantidad_videos):
 def step_impl(context, cantidad_videos):
     context.execute_steps(f"Then veo {cantidad_videos} videos")
 
-@then(u'pido mas videos')
+@when(u'estoy en la pantalla principal y pido mas')
 def step_impl(context):
+    context.execute_steps("""
+        When estoy en la pantalla principal
+        Then veo 10 videos
+    """)
     context.response = ChotuveAppServerApiClient().get_mas_videos(context)
 
-@then(u'pido demasiados videos')
-def step_impl(context):
-    context.response = ChotuveAppServerApiClient().get_videos_inexistentes(context)
 
 def subir_videos(context, cantidad_videos):
     for i in range(cantidad_videos):
