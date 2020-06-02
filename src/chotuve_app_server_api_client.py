@@ -30,6 +30,9 @@ class ChotuveAppServerApiClient:
     
     def get_videos(self, context):
         return self.get_con_token('video', context)
+
+    def get_video_por_id(self, video_id, context):
+        return self.get_con_token(f'/video/{video_id}', context)
     
     def get_mas_videos(self, context):
         params = {'offset': 10, 'cantidad': 10}
