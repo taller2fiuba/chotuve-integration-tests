@@ -1,6 +1,5 @@
 from behave import *
 
-from config import CHOTUVE_APP_URL
 from verificar_respuestas import *
 from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
@@ -24,16 +23,3 @@ def step_impl(context):
 def step_impl(context):
     verificar_codigo_de_respuesta(context, 400)
 
-@when(u'pido el video')
-def step_impl(context):
-    context.execute_steps("""
-    When estoy en la pantalla principal
-    Then veo 1 videos""")
-    video = context.response.json()[0]
-    context.response = ChotuveAppServerApiClient().get_video_por_id(video['id'], context)
-
-@then('veo el video de "{email}"')
-def step_impl(context, email):
-    verificar_codigo_de_respuesta(context, 200)
-    video = context.response.json()
-    assert video['autor']['email'] == email, f"Incorrecto: {video['autor']['email']}, valor esperado: {email}"
