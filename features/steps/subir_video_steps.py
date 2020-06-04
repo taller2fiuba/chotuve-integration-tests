@@ -1,6 +1,5 @@
 from behave import *
 
-from config import CHOTUVE_APP_URL
 from verificar_respuestas import *
 from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
 
