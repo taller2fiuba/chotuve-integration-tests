@@ -24,4 +24,3 @@ Feature: Subir un video
 		Given inicie sesión correctamente
 		When subo un video con título "mi primer video", descripción "descripcion", ubicación "en mi casa", duracion 60 segundos y visibilidad "cualquier cosa"
 		Then veo error porque la información no es válida
-
