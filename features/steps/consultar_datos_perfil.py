@@ -41,9 +41,12 @@ def step_impl(context, nombre, apellido, telefono, direccion, mail):
 def step_impl(context, nombre, apellido):
 	datos = {
 		"nombre": nombre,
-		"apellido": apellido
+		"apellido": apellido,
+		"telefono": None,
+		"direccion": None
 	}
 	context.response = ChotuveAppServerApiClient().put_con_token("/usuario/perfil", datos, context)
+	verificar_codigo_de_respuesta(context, 200)
 
 @Then('veo mi nombre “{nombre}”, apellido “{apellido}” y email “{mail}”')
 def step_impl(context, nombre, apellido, mail):
