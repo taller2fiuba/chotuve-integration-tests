@@ -16,6 +16,13 @@ class ChotuveAppServerApiClient:
     def reaccionar(self, video, reaccion, context):
         return self.post_con_token(f'video/{video}/reaccion', 
             {"reaccion": reaccion}, context)
+        
+    def comentar(self, video, comentario, context):
+        return self.post_con_token(f'video/{video}/comentario',
+            {"comentario": comentario}, context)
+    
+    def obtener_comentarios(self, video, context):
+        return self.get_con_token(f'video/{video}/comentario', context)
 
     def subir_video(self, video_url, titulo, descripcion, ubicacion, duracion, visibilidad, context):
         body = {
