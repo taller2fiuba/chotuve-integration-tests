@@ -18,7 +18,7 @@ def step_impl(context, nombre, apellido):
 def step_impl(context, mail):
 	assert context.response.json()["email"] == mail
 
-@Given('Complete los campos de mi perfil con nombre “{nombre}”, apellido “{apellido}”, teléfono “{telefono}”, dirección “{direccion}”')
+@Given('completé los campos de mi perfil con nombre "{nombre}", apellido "{apellido}", teléfono "{telefono}", dirección "{direccion}"')
 def step_impl(context, nombre, apellido, telefono, direccion):
 	datos = {
 		"nombre": nombre,
@@ -29,7 +29,7 @@ def step_impl(context, nombre, apellido, telefono, direccion):
 	context.response = ChotuveAppServerApiClient().put_con_token("/usuario/perfil", datos, context)
 	verificar_codigo_de_respuesta(context, 200)
 
-@Then('veo mi nombre “{nombre}”, apellido “{apellido}”, teléfono “{telefono}”, dirección “{direccion}” y email “{mail}”')
+@Then('veo mi nombre "{nombre}", apellido "{apellido}", teléfono "{telefono}", dirección "{direccion}" y email "{mail}"')
 def step_impl(context, nombre, apellido, telefono, direccion, mail):
 	assert context.response.json()["nombre"] == nombre
 	assert context.response.json()["apellido"] == apellido
@@ -37,7 +37,7 @@ def step_impl(context, nombre, apellido, telefono, direccion, mail):
 	assert context.response.json()["direccion"] == direccion
 	assert context.response.json()["email"] == mail
 
-@Given('Complete los campos de mi perfil con nombre “{nombre}”, apellido “{apellido}”')
+@Given('completé los campos de mi perfil con nombre "{nombre}", apellido "{apellido}"')
 def step_impl(context, nombre, apellido):
 	datos = {
 		"nombre": nombre,
@@ -48,13 +48,13 @@ def step_impl(context, nombre, apellido):
 	context.response = ChotuveAppServerApiClient().put_con_token("/usuario/perfil", datos, context)
 	verificar_codigo_de_respuesta(context, 200)
 
-@Then('veo mi nombre “{nombre}”, apellido “{apellido}” y email “{mail}”')
+@Then('veo mi nombre "{nombre}", apellido "{apellido}" y email "{mail}"')
 def step_impl(context, nombre, apellido, mail):
 	assert context.response.json()["nombre"] == nombre
 	assert context.response.json()["apellido"] == apellido
 	assert context.response.json()["email"] == mail
 
-@Given('el usuario con email “{mail}” modifico su perfil con nombre “{nombre}”, apellido “{apellido}”, teléfono “{telefono}”, dirección “{direccion}”')
+@Given('el usuario con email "{mail}" modifico su perfil con nombre "{nombre}", apellido "{apellido}", teléfono "{telefono}", dirección "{direccion}"')
 def step_impl(context, mail, nombre, apellido, telefono, direccion):
 	context.response = ChotuveAppServerApiClient().registrarse(mail, "PASSWORD")
 	verificar_codigo_de_respuesta(context, 201)
@@ -80,7 +80,7 @@ def step_impl(context, mail, nombre, apellido, telefono, direccion):
 		context.response = ChotuveAppServerApiClient().get_con_token("/usuario/perfil/"+otro_usuario_id, context)
 		verificar_codigo_de_respuesta(context, 200)
 
-@Then('veo su nombre “{nombre}”, apellido “{apellido}”, teléfono “{telefono}”, dirección “{direccion}” y email “{mail}”')
+@Then('veo su nombre "{nombre}", apellido "{apellido}", teléfono "{telefono}", dirección "{direccion}" y email "{mail}"')
 def step_impl(context, nombre, apellido, telefono, direccion, mail):
 	assert context.response.json()["nombre"] == nombre
 	assert context.response.json()["apellido"] == apellido
