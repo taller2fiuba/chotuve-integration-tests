@@ -60,3 +60,6 @@ class ChotuveAppServerApiClient:
         headers = {'Authorization': f'Bearer {context.token}'}
         return requests.post(f'{CHOTUVE_APP_URL}/{url}', json=json, headers=headers)
 
+    def put_con_token(self, url, json, context):
+        headers = {'Authorization': f'Bearer {context.token}'}
+        return requests.put(f'{CHOTUVE_APP_URL}/{url}', json=json, headers=headers)
