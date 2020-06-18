@@ -12,6 +12,10 @@ class ChotuveAppServerApiClient:
 
     def mi_perfil(self, context):
         return self.get_con_token('usuario', context)
+    
+    def reaccionar(self, video, reaccion, context):
+        return self.post_con_token(f'video/{video}/reaccion', 
+            {"reaccion": reaccion}, context)
 
     def subir_video(self, video_url, titulo, descripcion, ubicacion, duracion, visibilidad, context):
         body = {
