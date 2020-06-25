@@ -1,8 +1,7 @@
 from behave import *
 
-from steps.verificar_respuestas import *
-from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
+from steps.util.limpiar_base import limpiar_base_de_datos
 
 def before_scenario(context, scenario):
-    context.response = ChotuveAppServerApiClient().limpiar_base_de_datos()
-    verificar_codigo_de_respuesta(context, 200)
+    response = limpiar_base_de_datos()
+    assert response.status_code == 200, 'Error al limpiar la base de datos'

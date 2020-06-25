@@ -1,7 +1,7 @@
 from behave import *
 
-from verificar_respuestas import *
-from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
+from util import assert_status_code
+from util.chotuve import ChotuveAppClient
 
 REACCIONES = {
     "me gusta": 'me-gusta',
@@ -16,49 +16,39 @@ REACCIONES_VIDEO = {
 @when('reacciono "{reaccion}" al video')
 def step_impl(context, reaccion):
     context.execute_steps('Given inicie sesión correctamente')
-    context.response = ChotuveAppServerApiClient().get_videos(context)
-    verificar_codigo_de_respuesta(context, 200)
-    context.video_id = context.response.json()[0]['id']
+    context.data = context.yo.obtener_videos()
+    context.video_id = context.data[0]['id']
     reaccion_json = REACCIONES[reaccion]
-    response = ChotuveAppServerApiClient().reaccionar(context.video_id, 
-        reaccion_json, context)
-    assert 200 <= response.status_code <= 201, f'Código de estado incorrecto: {response.status_code}'
+    response = context.yo.reaccionar_video(context.video_id, reaccion_json)
     
 @then('veo que el video tiene {cantidad:d} "{reaccion}"')
 def step_impl(context, cantidad, reaccion):
-    context.response = ChotuveAppServerApiClient().get_video_por_id(context.video_id, context)
-    verificar_codigo_de_respuesta(context, 200)
+    context.execute_steps('Given inicie sesión correctamente')
+    context.data = context.yo.obtener_video_id(context.video_id)
 
-    assert context.response.json()[REACCIONES_VIDEO[reaccion]] == cantidad, context.response.json()
+    assert context.data[REACCIONES_VIDEO[reaccion]] == cantidad, context.data
 
 @then('veo que yo reaccioné "{reaccion}"')
 def step_impl(context, reaccion):
     context.execute_steps('Given inicie sesión correctamente')
-    context.response = ChotuveAppServerApiClient().get_video_por_id(context.video_id, context)
-    verificar_codigo_de_respuesta(context, 200)
+    context.data = context.yo.obtener_video_id(context.video_id)
 
-    assert context.response.json()['mi-reaccion'] == REACCIONES[reaccion]
+    assert context.data['mi-reaccion'] == REACCIONES[reaccion]
 
 @then('veo que yo no reaccioné')
 def step_impl(context):
     context.execute_steps('Given inicie sesión correctamente')
-    context.response = ChotuveAppServerApiClient().get_video_por_id(context.video_id, context)
-    verificar_codigo_de_respuesta(context, 200)
+    context.data = context.yo.obtener_video_id(context.video_id)
 
-    assert context.response.json()['mi-reaccion'] == None
+    assert context.data['mi-reaccion'] == None
 
 @given('el usuario con email "{email}" reaccionó "{reaccion}" al video')
 def step_impl(context, email, reaccion):
-    context.response = ChotuveAppServerApiClient().registrarse(email, "PASSWORD")
-    verificar_codigo_de_respuesta(context, 201)
-    context.token = context.response.json()['auth_token']
-    context.response = ChotuveAppServerApiClient().get_videos(context)
-    verificar_codigo_de_respuesta(context, 200)
-    context.video_id = context.response.json()[0]['id']
+    context.usuario = ChotuveAppClient.registrar_usuario(email, "PASSWORD")
+    videos = context.usuario.obtener_videos()
+    context.video_id = videos[0]['id']
     reaccion_json = REACCIONES[reaccion]
-    response = ChotuveAppServerApiClient().reaccionar(context.video_id, 
-        reaccion_json, context)
-    assert 200 <= response.status_code <= 201, f'Código de estado incorrecto: {response.status_code}'
+    context.usuario.reaccionar_video(context.video_id, reaccion_json)
 
 @given('reaccioné "{reaccion}" al video')
 def step_impl(context, reaccion):
