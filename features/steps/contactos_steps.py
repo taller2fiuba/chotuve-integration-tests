@@ -66,7 +66,8 @@ def step_impl(context):
 @given('"{nombre}" es mi contacto')
 def step_impl(context, nombre):
     context.yo.enviar_solicitud_contacto(context.usuarios_data[nombre]['id'])
-    context.data = context.usuarios[nombre].obtener_solicitudes_contacto()['solicitud_id']
+    solicitud = context.usuarios[nombre].obtener_solicitudes_contacto()[0]['id']
+    context.usuarios[nombre].aceptar_solicitud_contacto(solicitud)
 
 @when('veo mis contactos')
 def step_impl(context):
