@@ -104,6 +104,31 @@ class ChotuveAppClient:
     def actualizar_perfil(self, datos):
         response = self._put(f'/usuario/perfil', datos, self.auth_token)
 
+    def aceptar_solicitud_contacto(self, solicitud_id):
+        self.last_response = self._put(f'/usuario/solicitud-contacto/{solicitud_id}',
+                                       {'accion': 'aceptar'}, 
+                                       self.auth_token)
+
+    def rechazar_solicitud_contacto(self, solicitud_id):
+        self.last_response = self._put(f'/usuario/solicitud-contacto/{solicitud_id}',
+                                       {'accion': 'rechazar'}, 
+                                       self.auth_token)
+    
+    def enviar_solicitud_contacto(self, usuario_id):
+        self.last_response = self._post('/usuario/solicitud-contacto', {
+            'usuario_id': usuario_id
+        }, self.auth_token)
+        return self.last_response.json()
+    
+    def obtener_solicitudes_contacto(self):
+        self.last_response = self._get('/usuario/solicitud-contacto', {}, self.auth_token)
+        return self.last_response.json()
+
+    def obtener_contactos(self, usuario_id=None):
+        url = f"/usuario{'/' + str(usuario_id) if usuario_id else ''}/contacto"
+        self.last_response = self._get(url, {}, self.auth_token)
+        return self.last_response.json()
+
     @staticmethod
     def _get(url_path, params, auth_token=None):
         if not params:
