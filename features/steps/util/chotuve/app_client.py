@@ -102,7 +102,7 @@ class ChotuveAppClient:
         return response.json()
     
     def actualizar_perfil(self, datos):
-        response = self._put(f'/usuario/perfil', datos, self.auth_token)
+        self.last_response = self._put(f'/usuario/perfil', datos, self.auth_token)
 
     def aceptar_solicitud_contacto(self, solicitud_id):
         self.last_response = self._put(f'/usuario/solicitud-contacto/{solicitud_id}',
