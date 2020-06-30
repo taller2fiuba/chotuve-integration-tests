@@ -1,21 +1,21 @@
 from behave import *
 
-from config import CHOTUVE_APP_URL
-from config_usuario import EMAIL, PASSWORD
-from verificar_respuestas import *
-from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
-from src.chotuve_auth_server_api_client import ChotuveAuthServerApiClient
+from util import assert_status_code
+from util.fixture_usuario import EMAIL, PASSWORD
+from util.chotuve import ChotuveAppClient
+from util.chotuve.error import ChotuveAppError
+from util.chotuve_auth_server_api_client import ChotuveAuthServerApiClient
 
 @given('se crearon {cantidad:d} usuarios')
 def step_impl(context, cantidad):
     context.usuarios = []
     for i in range(cantidad):
-        context.response = ChotuveAppServerApiClient().registrarse(str(i) + EMAIL, PASSWORD)
-        verificar_codigo_de_respuesta(context, 201)
-        context.usuarios.append(context.response.json()['auth_token'])
+        usuario_nuevo = ChotuveAppClient.registrar_usuario(str(i) + EMAIL, 
+                                                           PASSWORD)
+        context.usuarios.append(usuario_nuevo)
     
     if cantidad > 0:
-        context.usuario_id = ChotuveAuthServerApiClient().obtener_id(context.usuarios[0])
+        context.usuario_id = ChotuveAuthServerApiClient().obtener_id(context.usuarios[0].auth_token)
     
 
 @when('veo los usuarios desde el web admin')
@@ -37,12 +37,12 @@ def step_impl(context, accion):
         assert False, "La acción no está implementada"
     
     context.response = ChotuveAuthServerApiClient().actualizar_usuario(context.usuario_id, data)
-    verificar_codigo_de_respuesta(context, 200)
+    assert_status_code(200, context.response.status_code)
 
 @then('veo que el usuario está "{estado}"')
 def step_impl(context, estado):
     context.response = ChotuveAuthServerApiClient().obtener_usuario(context.usuario_id)
-    verificar_codigo_de_respuesta(context, 200)
+    assert_status_code(200, context.response.status_code)
     data = context.response.json()
     if estado == 'habilitado':
         assert data['habilitado']
@@ -58,8 +58,11 @@ def step_impl(context):
 
 @when('el usuario inicia sesión')
 def step_impl(context):
-    context.response = ChotuveAppServerApiClient().iniciar_sesion(str(0) + EMAIL, PASSWORD)
+    try:
+        context.usuario = ChotuveAppClient(str(0) + EMAIL, PASSWORD)
+    except ChotuveAppError as e:
+        context.error = e
 
 @then('ve error indicando que no está autorizado')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context, 400)
+    assert_status_code(400, context.error.status_code)

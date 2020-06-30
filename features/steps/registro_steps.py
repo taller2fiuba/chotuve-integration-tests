@@ -1,25 +1,26 @@
 from behave import *
 
-from config import CHOTUVE_APP_URL
-from config_usuario import EMAIL, PASSWORD
-from verificar_respuestas import *
-from src.chotuve_app_server_api_client import ChotuveAppServerApiClient
+from util import assert_status_code
+from util.fixture_usuario import EMAIL, PASSWORD
+from util.chotuve import ChotuveAppClient
+from util.chotuve.error import ChotuveAppError
 
 @given('mi mail ya se encuentra registrado')
 def step_impl(context):
-    context.execute_steps(u"""
-        When me registro con mail y contraseña
-    """)
+    context.execute_steps('When me registro con mail y contraseña')
 
 @when('me registro con mail y contraseña')
 def step_impl(context):
-    context.response = ChotuveAppServerApiClient().registrarse(EMAIL, PASSWORD)
+    try:
+        context.yo = ChotuveAppClient.registrar_usuario(EMAIL, PASSWORD)
+    except ChotuveAppError as e:
+        context.error = e
 
 @then('me registro exitosamente')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context, 201)
+    assert_status_code(201, context.yo.last_response.status_code)
 
 @then('veo error de registro porque el mail ya está en uso')
 def step_impl(context):
-    verificar_codigo_de_respuesta(context, 400)
-    assert context.response.json()['errores']['email'] == 'El mail ya se encuentra registrado'
+    assert 400 == context.error.status_code, str(context.error)
+    assert context.error.response.json()['errores']['email'] == 'El mail ya se encuentra registrado', str(context.error)
