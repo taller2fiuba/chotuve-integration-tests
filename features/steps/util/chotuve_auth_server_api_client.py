@@ -1,6 +1,6 @@
 import requests
 
-from steps.config import CHOTUVE_AUTH_URL
+from .chotuve.config import CHOTUVE_AUTH_URL
 
 class ChotuveAuthServerApiClient:
     def obtener_usuarios(self):
