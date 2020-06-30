@@ -56,23 +56,12 @@ def step_impl(context):
 
 @given('hay un video deshabilitado')
 def step_impl(context):
-    context.execute_steps(f"Given inicie sesión correctamente")
-    subir_videos(context, 1)
-    #context.execute_steps(f'deshabilito el video')
-    context.response = ChotuveMediaServerApiClient().get_videos()
-    assert_status_code(200, context.response.status_code)
-    video_id = context.response.json()[0]["_id"]
-    context.response = ChotuveMediaServerApiClient().deshabilitar_video(video_id)
-    assert_status_code(200, context.response.status_code)
+    context.execute_steps(f"""Given se crearon {1} videos""")
+    context.execute_steps(f'When deshabilito el video')
 
 @given('se deshabilito 1 video')
 def step_impl(context):
-    #context.execute_steps(f'deshabilito el video')
-    context.response = ChotuveMediaServerApiClient().get_videos()
-    assert_status_code(200, context.response.status_code)
-    video_id = context.response.json()[0]["_id"]
-    context.response = ChotuveMediaServerApiClient().deshabilitar_video(video_id)
-    assert_status_code(200, context.response.status_code)
+    context.execute_steps(f'When deshabilito el video')
 
 def subir_videos(context, cantidad_videos):
     context.execute_steps(f"""
