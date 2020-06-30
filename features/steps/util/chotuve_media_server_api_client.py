@@ -1,6 +1,6 @@
 import requests
 
-from steps.config import CHOTUVE_MEDIA_URL
+from util.chotuve.config import CHOTUVE_MEDIA_URL
 
 class ChotuveMediaServerApiClient:
 
