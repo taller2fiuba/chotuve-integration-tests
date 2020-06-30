@@ -25,7 +25,7 @@ Feature: Listar videos
 
     Scenario: Listar mas videos
         Given otro usuario se registro
-        And subio 16 videos
+        And otro usuario subio 16 videos
         When listo sus videos
         And listo mas videos del usuario
         Then veo sus 16 videos
