@@ -6,6 +6,7 @@ from util.chotuve import ChotuveAppClient
 from util.chotuve.error import ChotuveAppError
 
 ID_INVALIDO = 123456
+email_usuario = "otro_usuario@test.com"
 
 @given('otro usuario se registro')
 def step_impl(context):
@@ -34,7 +35,7 @@ def step_impl(context, cantidad_videos):
             context.error = e
 
 @Then(u'veo sus {cantidad_videos:d} videos')
-def step_impl(contex, cantidad_videos):
+def step_impl(context, cantidad_videos):
     assert len(context.data) == cantidad_videos
 
 @given(u'subi {cantidad_videos:d} videos')
@@ -51,24 +52,33 @@ def step_impl(context, cantidad_videos):
 
 @when('listo mis videos')
 def step_impl(context):
-    datos_otro_usuario = context.otro_usuario.obtener_mi_perfil()
-    context.data = context.yo.obtener_videos()
+    mis_datos = context.yo.obtener_mi_perfil()
+    context.data = context.yo.obtener_videos_usuario(mis_datos["id"])
 
 @Then(u'veo mis {cantidad_videos:d} videos')
-def step_impl(contex, cantidad_videos):
+def step_impl(context, cantidad_videos):
     assert len(context.data) == cantidad_videos
 
 @Then(u'veo solo {cantidad_videos:d} de sus videos')
-def step_impl(contex, cantidad_videos):
+def step_impl(context, cantidad_videos):
     assert len(context.data) == cantidad_videos
 
-#And listo mas videos del usuario
+@when('listo mas videos del usuario')
+def step_impl(context):
+    datos_otro_usuario = context.otro_usuario.obtener_mi_perfil()
+    context.data = context.yo.obtener_videos_usuario(datos_otro_usuario["id"], 10)
+
+@Then(u'veo {cantidad_videos:d} videos mas')
+def step_impl(context, cantidad_videos):
+    assert len(context.data) == cantidad_videos
 
 @when('listo los videos de un usuario que no existe')
 def step_impl(context):
-    datos_otro_usuario = context.otro_usuario.obtener_mi_perfil()
-    context.data = context.yo.obtener_videos_usuario(ID_INVALIDO)#implementar en app_client.py
+  try:
+    context.yo.obtener_videos_usuario(ID_INVALIDO)
+  except ChotuveAppError as e:
+    context.error = e
 
 @Then('veo error porque el usuario no existe')
-def step_impl(contex, cantidad_videos):
-    assert_status_code(401, context.error.status_code)#chequeear el status code
+def step_impl(context):
+    assert_status_code(404, context.error.status_code)

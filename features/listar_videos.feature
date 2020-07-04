@@ -24,11 +24,10 @@ Feature: Listar videos
         Then veo solo 10 de sus videos
 
     Scenario: Listar mas videos
-        Given otro usuario se registro
-        And otro usuario subio 16 videos
+        Given otro usuario subio 16 videos
         When listo sus videos
         And listo mas videos del usuario
-        Then veo sus 16 videos
+        Then veo 6 videos mas
 
     Scenario: Listar videos de un usuario que no existe
         When listo los videos de un usuario que no existe
