@@ -104,14 +104,6 @@ class ChotuveAppClient:
     def actualizar_perfil(self, datos):
         self.last_response = self._put(f'/usuario/perfil', datos, self.auth_token)
 
-    def obtener_videos_usuario(self, usuario_id, offset=0, cantidad=10):    
-        response = self._get(f'/usuario/{usuario_id}/video',
-                            {"cantidad": cantidad, "offset": offset}
-                            , self.auth_token)
-        
-        self.last_response = response
-        return response.json()
-
     @staticmethod
     def _get(url_path, params, auth_token=None):
         if not params:
