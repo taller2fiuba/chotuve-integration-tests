@@ -17,10 +17,6 @@ def step_impl(context):
     datos_otro_usuario = context.otro_usuario.obtener_mi_perfil()
     context.data = context.yo.obtener_videos_usuario(datos_otro_usuario["id"])#implementar en app_client.py
 
-#@Then('no veo ningun video')
-#def step_impl(context):
-#    assert len(context.data) == 0
-
 @given(u'otro usuario subio {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
     context.execute_steps(f'Given otro usuario se registro')
@@ -36,7 +32,7 @@ def step_impl(context, cantidad_videos):
 
 @Then(u'veo sus {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
-    assert len(context.data) == cantidad_videos
+    assert cantidad_de_videos(context) == cantidad_videos
 
 @given(u'subi {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
@@ -57,11 +53,11 @@ def step_impl(context):
 
 @Then(u'veo mis {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
-    assert len(context.data) == cantidad_videos
+    assert cantidad_de_videos(context) == cantidad_videos
 
 @Then(u'veo solo {cantidad_videos:d} de sus videos')
 def step_impl(context, cantidad_videos):
-    assert len(context.data) == cantidad_videos
+    assert cantidad_de_videos(context) == cantidad_videos
 
 @when('listo mas videos del usuario')
 def step_impl(context):
@@ -70,7 +66,7 @@ def step_impl(context):
 
 @Then(u'veo {cantidad_videos:d} videos mas')
 def step_impl(context, cantidad_videos):
-    assert len(context.data) == cantidad_videos
+    assert cantidad_de_videos(context) == cantidad_videos
 
 @when('listo los videos de un usuario que no existe')
 def step_impl(context):
@@ -82,3 +78,6 @@ def step_impl(context):
 @Then('veo error porque el usuario no existe')
 def step_impl(context):
     assert_status_code(404, context.error.status_code)
+
+def cantidad_de_videos(context):
+  return len(context.data["videos"])

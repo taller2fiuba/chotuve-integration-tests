@@ -6,7 +6,7 @@ Feature: Listar videos
     Scenario: Listar videos de un usuario sin videos
         Given otro usuario se registro
         When listo sus videos
-        Then no veo ningun video
+        Then veo sus 0 videos
 
     Scenario: Listar videos de un usuario con videos
         Given otro usuario subio 2 videos
