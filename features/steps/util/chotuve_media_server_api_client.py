@@ -12,4 +12,4 @@ class ChotuveMediaServerApiClient:
         return requests.put(f'{CHOTUVE_MEDIA_URL}/video/{video_id}', json = {'habilitado': False})
 
     def habilitar_video(self, video_id):
-        return requests.put(f'{CHOTUVE_MEDIA_URL}/video/{video_id}', {'habilitado': True})	
+        return requests.put(f'{CHOTUVE_MEDIA_URL}/video/{video_id}', json = {'habilitado': True})
