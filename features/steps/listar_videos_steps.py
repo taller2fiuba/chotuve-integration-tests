@@ -80,4 +80,4 @@ def step_impl(context):
     assert_status_code(404, context.error.status_code)
 
 def cantidad_de_videos(context):
-  return len(context.data["videos"])
+  return len(context.data)
