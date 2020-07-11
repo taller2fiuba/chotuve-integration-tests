@@ -30,10 +30,6 @@ def step_impl(context, cantidad_videos):
         except ChotuveAppError as e:
             context.error = e
 
-@Then(u'veo sus {cantidad_videos:d} videos')
-def step_impl(context, cantidad_videos):
-    assert cantidad_de_videos(context) == cantidad_videos
-
 @given(u'subi {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
     for veces in range(cantidad_videos):
@@ -53,20 +49,20 @@ def step_impl(context):
 
 @Then(u'veo mis {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
-    assert cantidad_de_videos(context) == cantidad_videos
+    context.execute_steps(f"Then veo {cantidad_videos} videos")
 
 @Then(u'veo solo {cantidad_videos:d} de sus videos')
 def step_impl(context, cantidad_videos):
-    assert cantidad_de_videos(context) == cantidad_videos
+    context.execute_steps(f"Then veo {cantidad_videos} videos")
+
+@Then(u'veo sus {cantidad_videos:d} videos')
+def step_impl(context, cantidad_videos):
+    context.execute_steps(f"Then veo {cantidad_videos} videos")
 
 @when('listo mas videos del usuario')
 def step_impl(context):
     datos_otro_usuario = context.otro_usuario.obtener_mi_perfil()
     context.data = context.yo.obtener_videos_usuario(datos_otro_usuario["id"], 10)
-
-@Then(u'veo {cantidad_videos:d} videos mas de ese usuario')
-def step_impl(context, cantidad_videos):
-    assert cantidad_de_videos(context) == cantidad_videos
 
 @when('listo los videos de un usuario que no existe')
 def step_impl(context):
@@ -78,6 +74,3 @@ def step_impl(context):
 @Then('veo error porque el usuario no existe')
 def step_impl(context):
     assert_status_code(404, context.error.status_code)
-
-def cantidad_de_videos(context):
-  return len(context.data["videos"])
