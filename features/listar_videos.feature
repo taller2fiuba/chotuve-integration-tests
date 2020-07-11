@@ -1,5 +1,5 @@
 Feature: Listar videos
-    
+
     Background: Estoy logeado
         Given inicie sesión correctamente
 
@@ -27,7 +27,7 @@ Feature: Listar videos
         Given otro usuario subio 16 videos
         When listo sus videos
         And listo mas videos del usuario
-        Then veo 6 videos mas
+        Then veo 6 videos mas de ese usuario
 
     Scenario: Listar videos de un usuario que no existe
         When listo los videos de un usuario que no existe

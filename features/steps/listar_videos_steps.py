@@ -15,17 +15,17 @@ def step_impl(context):
 @when('listo sus videos')
 def step_impl(context):
     datos_otro_usuario = context.otro_usuario.obtener_mi_perfil()
-    context.data = context.yo.obtener_videos_usuario(datos_otro_usuario["id"])#implementar en app_client.py
+    context.data = context.yo.obtener_videos_usuario(datos_otro_usuario["id"])
 
 @given(u'otro usuario subio {cantidad_videos:d} videos')
 def step_impl(context, cantidad_videos):
     context.execute_steps(f'Given otro usuario se registro')
     for veces in range(cantidad_videos):
         try:
-            context.otro_usuario.subir_video('https://www.testurl.com/video/1', "test", 
-                               60, 
-                               descripcion="descripcion", 
-                               ubicacion="ubicacion", 
+            context.otro_usuario.subir_video('https://www.testurl.com/video/1', "test",
+                               60,
+                               descripcion="descripcion",
+                               ubicacion="ubicacion",
                                visibilidad="publico")
         except ChotuveAppError as e:
             context.error = e
@@ -38,10 +38,10 @@ def step_impl(context, cantidad_videos):
 def step_impl(context, cantidad_videos):
     for veces in range(cantidad_videos):
         try:
-            context.yo.subir_video('https://www.testurl.com/video/1', "test", 
-                               60, 
-                               descripcion="descripcion", 
-                               ubicacion="ubicacion", 
+            context.yo.subir_video('https://www.testurl.com/video/1', "test",
+                               60,
+                               descripcion="descripcion",
+                               ubicacion="ubicacion",
                                visibilidad="publico")
         except ChotuveAppError as e:
             context.error = e
@@ -64,7 +64,7 @@ def step_impl(context):
     datos_otro_usuario = context.otro_usuario.obtener_mi_perfil()
     context.data = context.yo.obtener_videos_usuario(datos_otro_usuario["id"], 10)
 
-@Then(u'veo {cantidad_videos:d} videos mas')
+@Then(u'veo {cantidad_videos:d} videos mas de ese usuario')
 def step_impl(context, cantidad_videos):
     assert cantidad_de_videos(context) == cantidad_videos
 
@@ -80,4 +80,4 @@ def step_impl(context):
     assert_status_code(404, context.error.status_code)
 
 def cantidad_de_videos(context):
-  return len(context.data)
+  return len(context.data["videos"])
