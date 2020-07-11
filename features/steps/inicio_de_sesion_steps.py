@@ -33,6 +33,7 @@ def step_impl(context):
 def step_impl(context):
     assert_status_code(200, context.yo.last_response.status_code)
     assert context.yo.auth_token != ''
+    assert context.yo.id != ''
 
 @then('veo error de inicio de sesión porque el mail o la contraseña es incorrecto')
 def step_impl(context):
