@@ -11,7 +11,7 @@ def step_impl(context, cantidad_videos):
 @when('veo los videos')
 def step_impl(context):
     context.response = ChotuveMediaServerApiClient().get_videos()
-    context.data = context.response.json()
+    context.data = context.response.json()["videos"]
     assert_status_code(200, context.response.status_code)
 
 @then(u'veo que hay {cantidad_videos:d} videos')
@@ -23,7 +23,7 @@ def step_impl(context, cantidad_videos):
 def step_impl(context):
     context.response = ChotuveMediaServerApiClient().get_videos()
     assert_status_code(200, context.response.status_code)
-    video_id = context.response.json()[0]["_id"]
+    video_id = context.response.json()["videos"][0]["_id"]
     context.response = ChotuveMediaServerApiClient().deshabilitar_video(video_id)
     assert_status_code(200, context.response.status_code)
 
@@ -31,13 +31,13 @@ def step_impl(context):
 def step_impl(context):
     context.response = ChotuveMediaServerApiClient().get_videos()
     assert_status_code(200, context.response.status_code)
-    assert context.response.json()[0]["habilitado"] == False
+    assert context.response.json()["videos"][0]["habilitado"] == False
 
 @when('habilito el video')
 def step_impl(context):
     context.response = ChotuveMediaServerApiClient().get_videos()
     assert_status_code(200, context.response.status_code)
-    video_id = context.response.json()[0]["_id"]
+    video_id = context.response.json()["videos"][0]["_id"]
     context.response = ChotuveMediaServerApiClient().habilitar_video(video_id)
     assert_status_code(200, context.response.status_code)
 
@@ -45,7 +45,7 @@ def step_impl(context):
 def step_impl(context):
     context.response = ChotuveMediaServerApiClient().get_videos()
     assert_status_code(200, context.response.status_code)
-    assert context.response.json()[0]["habilitado"] == True   
+    assert context.response.json()["videos"][0]["habilitado"] == True   
 
 @when('obtengo el muro de videos')
 def step_impl(context):
