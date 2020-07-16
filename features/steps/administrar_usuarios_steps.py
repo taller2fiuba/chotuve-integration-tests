@@ -36,7 +36,12 @@ def step_impl(context, accion):
     else:
         assert False, "La acción no está implementada"
     
-    context.response = ChotuveAuthServerApiClient().actualizar_usuario(context.usuario_id, data)
+    response = ChotuveAuthServerApiClient().obtener_admin_token()
+    assert_status_code(200, response.status_code)
+    token = response.json()['auth_token']
+    context.response = ChotuveAuthServerApiClient().actualizar_usuario(context.usuario_id, 
+                                                                       data, 
+                                                                       token)
     assert_status_code(200, context.response.status_code)
 
 @then('veo que el usuario está "{estado}"')

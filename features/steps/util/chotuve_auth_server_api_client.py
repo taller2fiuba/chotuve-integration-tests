@@ -3,6 +3,12 @@ import requests
 from .chotuve.config import CHOTUVE_AUTH_URL
 
 class ChotuveAuthServerApiClient:
+    def obtener_admin_token(self):
+        return requests.post(f'{CHOTUVE_AUTH_URL}/usuario/admin', json={
+            'email': 'admin',
+            'password': 'admin'
+        })
+
     def obtener_usuarios(self):
         return requests.get(f'{CHOTUVE_AUTH_URL}/usuario')
     
@@ -15,6 +21,8 @@ class ChotuveAuthServerApiClient:
         assert response.status_code == 200, f'Error status code {response.status_code}'
         return response.json()['usuario_id']
     
-    def actualizar_usuario(self, usuario_id, data):
-        return requests.put(f'{CHOTUVE_AUTH_URL}/usuario/{usuario_id}', json=data)
+    def actualizar_usuario(self, usuario_id, data, auth_token):
+        return requests.put(f'{CHOTUVE_AUTH_URL}/usuario/{usuario_id}', 
+                            json=data,
+                            headers={'Authorization': f'Bearer {auth_token}'})
     
