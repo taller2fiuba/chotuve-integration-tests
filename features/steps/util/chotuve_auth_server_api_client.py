@@ -9,6 +9,19 @@ class ChotuveAuthServerApiClient:
             'password': 'admin'
         })
 
+    def registrar_app_server(self, url, nombre, auth_token):
+        return requests.post(f'{CHOTUVE_AUTH_URL}/app-server', 
+                             headers={'Authorization': f'Bearer {auth_token}'},
+                             json={'url': url, 'nombre': nombre})
+                            
+    def obtener_app_servers(self, auth_token):
+        return requests.get(f'{CHOTUVE_AUTH_URL}/app-server',
+                            headers={'Authorization': f'Bearer {auth_token}'})
+                        
+    def eliminar_app_server(self, app_id, auth_token):
+        return requests.delete(f'{CHOTUVE_AUTH_URL}/app-server/{app_id}',
+                               headers={'Authorization': f'Bearer {auth_token}'})
+
     def obtener_usuarios(self):
         return requests.get(f'{CHOTUVE_AUTH_URL}/usuario')
     
