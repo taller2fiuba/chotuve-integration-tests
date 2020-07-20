@@ -20,6 +20,15 @@ def step_impl(context, nombre):
         visibilidad = "privado"
         )
 
+@given('"{nombre}" subio un video publico')
+def step_impl(context, nombre):
+    context.usuarios[nombre].subir_video(
+        "http://www.video_test.com",
+        "Alto test",
+        60,
+        visibilidad = "publico"
+        )    
+
 @when('listo los videos de "{nombre}"')
 def step_impl(context, nombre):
     nombre_id = context.usuarios_data[nombre]["id"]
