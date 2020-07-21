@@ -7,8 +7,8 @@ Feature: Obtener videos por visibilidad
 
     Scenario: Obtener videos privados de un amigo
         Given "edson" es mi amigo
-        Given "edson" subio un video privado
-        Given "otro" subio un video publico
+        And "edson" subio un video privado
+        And "otro" subio un video publico
         When listo los videos de "edson"
         Then veo sus 1 videos
 
@@ -19,7 +19,7 @@ Feature: Obtener videos por visibilidad
 
     Scenario: Ver videos privados de un amigo en pantalla principal
         Given "edson" es mi amigo
-        Given "edson" subio un video privado
+        And "edson" subio un video privado
         When estoy en la pantalla principal
         Then veo 1 videos
 
