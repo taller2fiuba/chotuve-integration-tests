@@ -1,4 +1,4 @@
-Feature: Obtener stats
+Feature: Obtener stats app server
 
     Background: Estoy logueado y existe el usuario "edson"
         Given inicie sesión correctamente
@@ -26,6 +26,15 @@ Feature: Obtener stats
         And acepto la solicitud de contacto
         When veo las estadisticas
         then veo que hay 1 contactos
+        And veo que hay 0 reaccion
+
+    Scenario: Obtener estadisticas de cantidad de reacciones cuando hay multiples relaciones de amistad
+        Given "edson" me mandó solicitud de contacto
+		And acepto la solicitud de contacto
+        Given "lucho" me mandó solicitud de contacto
+        And acepto la solicitud de contacto
+        When veo las estadisticas
+        then veo que hay 2 contactos
         And veo que hay 0 reaccion
 
     Scenario: Obtener estadisticas de cantidad de reacciones cuando hay multiples relaciones de amistad
