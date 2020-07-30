@@ -19,10 +19,6 @@ def step_impl(context):
 def step_impl(context, cantidad):
     assert context.stats["total_reacciones"] == cantidad
 
-@then('veo que hay {cantidad:d} contactos')
+@then('veo que hay {cantidad:d} comentario')
 def step_impl(context, cantidad):
-    assert context.stats["total_contactos"] == cantidad
-
-@given('acepto la solicitud de contacto')
-def step_impl(context):
-    context.execute_steps('When acepto la solicitud de contacto')
+    assert context.stats["total_comentarios"] == cantidad
